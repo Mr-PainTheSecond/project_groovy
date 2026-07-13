@@ -1,0 +1,4 @@
+TODO on Unreal:
+Make the BPM exact.
+Fix the issues with the the bars with transitions
+Optimize the way new bars are made
