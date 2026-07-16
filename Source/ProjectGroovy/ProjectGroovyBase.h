@@ -18,16 +18,6 @@
 
 
 
-UENUM(BlueprintType)
-enum class EAllGameStates: uint8 {
-	start,
-	sideAudience,
-	sideGremlin,
-	gameWon,
-	gameOver
-};
-
-
 UCLASS()
 class PROJECTGROOVY_API AProjectGroovyBase : public AGameStateBase
 {

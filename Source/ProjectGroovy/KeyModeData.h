@@ -6,6 +6,17 @@
 #include "UObject/Object.h"
 #include "KeyModeData.generated.h"
 
+
+
+UENUM(BlueprintType)
+enum class EAllGameStates : uint8 {
+	start,
+	sideAudience,
+	sideGremlin,
+	gameWon,
+	gameOver
+};
+
 /**
  * 
  */
@@ -15,8 +26,10 @@ UCLASS()
 class PROJECTGROOVY_API AKeyModeData: public AActor {
 	GENERATED_BODY()
 protected:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Song")
-		bool isAudience;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Mode")
+		EAllGameStates gameState;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Progress")
+		int totalQuarterBeats;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Song")
 		UAudioComponent* song;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Song")
@@ -37,10 +50,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void setActive();
+	void swapActive();
 
 	bool getActive();
 
 	UFUNCTION(BlueprintCallable, Category = "Initialization")
-		void setMajorAtrributes(bool activeness, bool BAudience, UAudioComponent* USong, TArray<FString> TNoteList);
+		void setMajorAtrributes(bool activeness, EAllGameStates state, UAudioComponent* USong, TArray<FString> TNoteList);
 };

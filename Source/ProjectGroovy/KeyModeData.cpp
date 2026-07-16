@@ -9,11 +9,12 @@ AKeyModeData::AKeyModeData() {
 	// Placeholder values
 	song = NULL;
 	noteList = {};
-	isAudience = false;
+	gameState = (EAllGameStates::start);
 	active = true;
 
 	// Actual starting values
 	noteIndex = 0;
+	totalQuarterBeats = 0;
 	health = 0.5f;
 }
 
@@ -23,15 +24,18 @@ bool AKeyModeData::getActive() {
 }
 
 /*Active setter*/
-void AKeyModeData::setActive() {
-	active = true;
+void AKeyModeData::swapActive() {
+	active = !active;
 }
 
-void AKeyModeData::setMajorAtrributes(bool activeness, bool BAudience, UAudioComponent* USong, TArray<FString> TNoteList) {
-	this->isAudience = BAudience;
+void AKeyModeData::setMajorAtrributes(bool activeness, EAllGameStates state, UAudioComponent* USong, TArray<FString> TNoteList) {
+	this->gameState = state;
 	this->song = USong;
-	this->noteList = TNoteList;
 	this->active = activeness;
+
+	for (int a = 0; a < TNoteList.Num(); a++) {
+		noteList.Add(TNoteList[a]);
+	}
 }
 
 void AKeyModeData::BeginPlay() {

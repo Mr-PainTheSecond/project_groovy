@@ -10,8 +10,40 @@ ARhythmGameMode::ARhythmGameMode() {
 	playingSong = NULL;
 	audienceMode = NULL;
 	dollMode = NULL;
+	audioImporter = NULL;
 	initialized = false;
 
+
+}
+
+void ARhythmGameMode::createAudioImporter() {
+	
+	if (audioImporter != NULL) return;
+
+	audioImporter = URuntimeAudioImporterLibrary::CreateRuntimeAudioImporter();
+
+	UKismetSystemLibrary::PrintString(GetWorld(), "We are in C++");
+
+
+	audioImporter->OnProgressNative.AddWeakLambda(this, [this](int32 Percentage)
+		{
+			UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Import Progress: %d%%"), Percentage));
+	});
+
+
+	// Trigger this whenever we import a song
+	audioImporter->OnResultNative.AddWeakLambda(this, [this](URuntimeAudioImporterLibrary* Importer, UImportedSoundWave* ImportedSoundWave, ERuntimeImportStatus Status) {
+		if (Status == ERuntimeImportStatus::SuccessfulImport) {
+			UKismetSystemLibrary::PrintString(GetWorld(), "Imported Song!");
+			UGameplayStatics::PlaySound2D(GetWorld(), ImportedSoundWave);
+		}
+		else {
+			UKismetSystemLibrary::PrintString(GetWorld(), "Failed to import song");
+		}
+	});
+
+	audioImporter->ImportAudioFromFile(TEXT("C:/Users/Owner/Music/ProjectGroovy/ProjectGroovy/Content/Songs/MU_Billie.mp3"), ERuntimeAudioFormat::Mp3);
+	UKismetSystemLibrary::PrintString(GetWorld(), "File is imported");
 }
 
 /*Spawns both instances of the game modes. Isn't
@@ -28,6 +60,13 @@ void ARhythmGameMode::initializeModeData() {
 	if (audienceMode == NULL || dollMode == NULL) RequestEngineExit("Could not make the new mode references");
 
 	initialized = true;
+}
+
+void ARhythmGameMode::swapActiveModes() {
+	if (audienceMode == NULL || dollMode == NULL) RequestEngineExit("One of the modes isn't initialized");
+
+	audienceMode->swapActive();
+	dollMode->swapActive();
 }
 
 /*Getter of the actual song. This function isn't
