@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
+#include "Kismet/KismetInputLibrary.h"
 #include "GroovyUtilities.generated.h"
 
 /**
@@ -17,4 +18,8 @@ class PROJECTGROOVY_API UGroovyUtilities : public UObject
 public:
 	UFUNCTION(BlueprintCallable, Category = "Math")
 		static int properMod(int a, int b);
+	UFUNCTION(BlueprintCallable, Category = "Keyboard")
+		static bool IncludesKey(TArray<FKey> keys, FKey key);
+	UFUNCTION(BlueprintCallable, Category = "Keyboard")
+		static bool MatchingKey(FKey keyA, FKey keyB);
 };

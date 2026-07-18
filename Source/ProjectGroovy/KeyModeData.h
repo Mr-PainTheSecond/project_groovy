@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
+#include "MusicNote.h"
+#include "GroovyUtilities.h"
 #include "KeyModeData.generated.h"
 
 
@@ -30,6 +32,8 @@ protected:
 		EAllGameStates gameState;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Progress")
 		int totalQuarterBeats;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Progress")
+		int currentQuarterBeats;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Song")
 		UAudioComponent* song;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Song")
@@ -38,6 +42,10 @@ protected:
 		float health;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Song")
 		TArray<FString> noteList;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Notes")
+		TArray<AMusicNote*> noteObjects;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Notes")
+		TArray<AMusicNote*> beingPlayed;
 	bool active;
 public:
 	AKeyModeData();
@@ -52,8 +60,14 @@ public:
 
 	void swapActive();
 
+
+	UFUNCTION(BlueprintCallable, Category = "Scoring")
+		void ScoreNotes(FKey input);
+
 	bool getActive();
 
 	UFUNCTION(BlueprintCallable, Category = "Initialization")
 		void setMajorAtrributes(bool activeness, EAllGameStates state, UAudioComponent* USong, TArray<FString> TNoteList);
+private:
+	TArray<FKey> validKeys;
 };

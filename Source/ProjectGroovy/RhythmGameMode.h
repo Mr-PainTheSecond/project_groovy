@@ -23,16 +23,16 @@ class PROJECTGROOVY_API ARhythmGameMode : public AGameModeBase
 	GENERATED_BODY()
 protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Song")
-	UAudioComponent* playingSong;
+		UAudioComponent* playingSong;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Modes")
-	AKeyModeData* audienceMode;
+		AKeyModeData* audienceMode;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Modes")
-	AKeyModeData* dollMode;
+		AKeyModeData* dollMode;
 	bool initialized;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Audio Management")
-	URuntimeAudioImporterLibrary* audioImporter;
+		URuntimeAudioImporterLibrary* audioImporter;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Audio Management")
-	UAudioComponent* audioBuffer;
+		UAudioComponent* audioBuffer;
 public:
 	ARhythmGameMode();
 
