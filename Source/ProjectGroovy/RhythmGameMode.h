@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "KeyModeData.h"
 #include "NotePad.h"
+#include "ProjectGroovyBase.h"
 #include "RuntimeAudioImporterLibrary.h"
 #include "RuntimeAudioImporterTypes.h"
 #include "RhythmGameMode.generated.h"

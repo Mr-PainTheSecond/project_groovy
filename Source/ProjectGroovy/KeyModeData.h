@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
+#include "Teleporter.h"
 #include "MusicNote.h"
 #include "GroovyUtilities.h"
 #include "KeyModeData.generated.h"
@@ -14,7 +15,7 @@ UENUM(BlueprintType)
 enum class EAllGameStates : uint8 {
 	start,
 	sideAudience,
-	sideGremlin,
+	sideDoll,
 	gameWon,
 	gameOver
 };
@@ -46,13 +47,20 @@ protected:
 		TArray<AMusicNote*> noteObjects;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Notes")
 		TArray<AMusicNote*> beingPlayed;
-	bool active;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Anchor")
+		ATeleporter* anchor;
 public:
 	AKeyModeData();
+
+	bool active;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Flags")
+		bool initialized;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	void swapLocation();
 
 public:
 	// Called every frame
@@ -67,7 +75,7 @@ public:
 	bool getActive();
 
 	UFUNCTION(BlueprintCallable, Category = "Initialization")
-		void setMajorAtrributes(bool activeness, EAllGameStates state, UAudioComponent* USong, TArray<FString> TNoteList);
+		void setMajorAtrributes(bool activeness, EAllGameStates state, UAudioComponent* USong, TArray<FString> TNoteList, TArray<ATeleporter*> TTele);
 private:
 	TArray<FKey> validKeys;
 };

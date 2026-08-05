@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameStateBase.h"
-#include "RhythmGameMode.h"
+#include "KeyModeData.h"
 #include "Components/AudioComponent.h"
 #include "GameFramework/CheatManager.h"
 #include "Components/ProgressBar.h"
@@ -25,11 +25,12 @@ public:
 	GENERATED_BODY()
 		AProjectGroovyBase();
 	UFUNCTION(BlueprintCallable, Category="Health")
-		void changeHealth(float healthChange);
+		void changeHealth(float healthChange, EAllGameStates state);
 
+		void setGameState(EAllGameStates state);
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="State")
-		uint8 gameState;
+		EAllGameStates gameState;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
 		float health;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health Bar")

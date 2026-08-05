@@ -7,14 +7,14 @@
 
 /*Ensures all the properties have some initial value*/
 AProjectGroovyBase::AProjectGroovyBase() {
-	gameState = (uint8)(EAllGameStates::start);
+	gameState = (EAllGameStates::start);
 	health = 0.5f;
 	audienceBar = NULL;
 }
 
 
 
-void AProjectGroovyBase::changeHealth(float healthChange) {
+void AProjectGroovyBase::changeHealth(float healthChange, EAllGameStates state) {
 	health += healthChange;
 
 	// Capped at one
@@ -36,11 +36,15 @@ void AProjectGroovyBase::changeHealth(float healthChange) {
 
 void AProjectGroovyBase::handleDeath() {
 	// Upon Death, stop the song!!!
-	ARhythmGameMode* gameMode = (ARhythmGameMode*)UGameplayStatics::GetGameMode(GetWorld());
+	/*ARhythmGameMode* gameMode = (ARhythmGameMode*)UGameplayStatics::GetGameMode(GetWorld());
 
 	UAudioComponent* currentSong = gameMode->getCurrentSong();
 
-	currentSong->Stop();
+	currentSong->Stop();*/
 
-	gameState = (uint8)(EAllGameStates::gameOver);
+	gameState = (EAllGameStates::gameOver);
+}
+
+void AProjectGroovyBase::setGameState(EAllGameStates state) {
+	gameState = state;
 }

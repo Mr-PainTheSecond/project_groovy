@@ -24,6 +24,9 @@ AKeyModeData::AKeyModeData() {
 	validKeys.Add(FKey("F"));
 	validKeys.Add(FKey("G"));
 	validKeys.Add(FKey("H"));
+
+	// Once everything is properly set, can become true
+	initialized = false;
 }
 
 /*Active getter*/
@@ -34,8 +37,20 @@ bool AKeyModeData::getActive() {
 /*Active setter*/
 void AKeyModeData::swapActive() {
 	active = !active;
+
+	if (active) {
+		swapLocation();
+	}
 }
 
+void AKeyModeData::swapLocation() {
+	// Downcasted to Actor for methods
+	AActor* player = (AActor*)UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+
+	FVector anchorLcoation = anchor->GetActorLocation();
+
+	player->SetActorLocation(anchorLcoation);
+}
 
 
 void AKeyModeData::ScoreNotes(FKey input) {
@@ -48,6 +63,10 @@ void AKeyModeData::ScoreNotes(FKey input) {
 	bool validNoteFound = false;
 	for (int a = 0; a < noteObjects.Num(); a++) {
 		AMusicNote* currentNote = noteObjects[a];
+
+		if (!(currentNote->active)) {
+			continue;
+		}
 
 		// If true: Officially, the player fucked up
 		if (theQuarterBeat != -1 && currentNote->quarterBeat != theQuarterBeat) {
@@ -90,7 +109,7 @@ void AKeyModeData::ScoreNotes(FKey input) {
 	}
 }
 
-void AKeyModeData::setMajorAtrributes(bool activeness, EAllGameStates state, UAudioComponent* USong, TArray<FString> TNoteList) {
+void AKeyModeData::setMajorAtrributes(bool activeness, EAllGameStates state, UAudioComponent* USong, TArray<FString> TNoteList, TArray<ATeleporter*> TTele) {
 	this->gameState = state;
 	this->song = USong;
 	this->active = activeness;
@@ -98,6 +117,25 @@ void AKeyModeData::setMajorAtrributes(bool activeness, EAllGameStates state, UAu
 	for (int a = 0; a < TNoteList.Num(); a++) {
 		noteList.Add(TNoteList[a]);
 	}
+
+	// Decides where the player will teleport upon swapping
+	if (gameState == EAllGameStates::sideAudience) {
+		if (TTele[0]->isAudience) {
+			anchor = TTele[0];
+		}
+		else {
+			anchor = TTele[1];
+		}
+	}
+	else {
+		if (TTele[0]->isAudience) {
+			anchor = TTele[1];
+		}
+		else {
+			anchor = TTele[0];
+		}
+	}
+
 }
 
 void AKeyModeData::BeginPlay() {

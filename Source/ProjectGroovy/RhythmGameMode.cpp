@@ -67,6 +67,18 @@ void ARhythmGameMode::swapActiveModes() {
 
 	audienceMode->swapActive();
 	dollMode->swapActive();
+
+	// If modes aren't active, we don't change the game state
+	if (!(audienceMode->initialized) || !(dollMode->initialized)) return;
+
+	AProjectGroovyBase* theBase = (AProjectGroovyBase*)UGameplayStatics::GetActorOfClass(GetWorld(), AProjectGroovyBase::StaticClass());
+
+	if (audienceMode->active) {
+		theBase->setGameState(EAllGameStates::sideAudience);
+	}
+	else {
+		theBase->setGameState(EAllGameStates::sideDoll);
+	}
 }
 
 /*Getter of the actual song. This function isn't
