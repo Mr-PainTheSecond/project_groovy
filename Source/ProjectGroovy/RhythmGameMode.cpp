@@ -75,10 +75,22 @@ void ARhythmGameMode::swapActiveModes() {
 
 	if (audienceMode->active) {
 		theBase->setGameState(EAllGameStates::sideAudience);
+		swapAudioTrack(dollMode, audienceMode);
 	}
 	else {
 		theBase->setGameState(EAllGameStates::sideDoll);
+		swapAudioTrack(audienceMode, dollMode);
 	}
+
+}
+
+void ARhythmGameMode::swapAudioTrack(AKeyModeData* stopping, AKeyModeData* starting) {
+	stopping->PauseAudio();
+
+	starting->UnPauseAudio();
+
+	playingSong = starting->getSong();
+
 }
 
 /*Getter of the actual song. This function isn't

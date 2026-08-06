@@ -32,9 +32,13 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="State")
 		EAllGameStates gameState;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
-		float health;
+		float audienceHealth;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
+		float dollHealth;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health Bar")
 		UProgressBar* audienceBar;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health Bar")
+		UProgressBar* dollBar;
 private:
 	void handleDeath();
 };

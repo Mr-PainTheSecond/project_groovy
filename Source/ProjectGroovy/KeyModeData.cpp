@@ -18,6 +18,7 @@ AKeyModeData::AKeyModeData() {
 	noteIndex = 0;
 	totalQuarterBeats = 0;
 	health = 0.5f;
+	timeStamp = 0.0f;
 
 	// Our list of what the user can press
 	validKeys.Add(FKey("D"));
@@ -41,6 +42,31 @@ void AKeyModeData::swapActive() {
 	if (active) {
 		swapLocation();
 	}
+}
+
+void AKeyModeData::PauseAudio() {
+	if (song == NULL) return;
+
+	song->SetPaused(true);
+}
+
+void AKeyModeData::UnPauseAudio() {
+	if (song == NULL) return;
+
+	EAudioComponentPlayState playState = song->GetPlayState();
+
+	// If called and song hasn't started, we need to wait until it does start
+	if (!(song->IsPlaying())) {
+		return;
+	}
+	else {
+		UKismetSystemLibrary::PrintString(GetWorld(), "Unpaused Audio");
+		song->SetPaused(false);
+	}
+}
+
+UAudioComponent* AKeyModeData::getSong() {
+	return song;
 }
 
 void AKeyModeData::swapLocation() {

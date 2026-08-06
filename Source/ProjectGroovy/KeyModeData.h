@@ -3,8 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameFramework/GameModeBase.h"
 #include "UObject/Object.h"
+#include "Kismet/GameplayStatics.h"
 #include "Teleporter.h"
+#include "Components/AudioComponent.h"
 #include "MusicNote.h"
 #include "GroovyUtilities.h"
 #include "KeyModeData.generated.h"
@@ -37,6 +40,8 @@ protected:
 		int currentQuarterBeats;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Song")
 		UAudioComponent* song;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Anchor")
+		float timeStamp;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Song")
 		int noteIndex;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Health")
@@ -73,6 +78,12 @@ public:
 		void ScoreNotes(FKey input);
 
 	bool getActive();
+
+	void PauseAudio();
+	void UnPauseAudio();
+
+	UAudioComponent* getSong();
+
 
 	UFUNCTION(BlueprintCallable, Category = "Initialization")
 		void setMajorAtrributes(bool activeness, EAllGameStates state, UAudioComponent* USong, TArray<FString> TNoteList, TArray<ATeleporter*> TTele);

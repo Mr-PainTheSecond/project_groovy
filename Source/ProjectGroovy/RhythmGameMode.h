@@ -48,4 +48,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Flag Management")
 		void swapActiveModes();
+
+		void swapAudioTrack(AKeyModeData* stopping, AKeyModeData* starting);
 };

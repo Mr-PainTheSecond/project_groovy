@@ -8,13 +8,32 @@
 /*Ensures all the properties have some initial value*/
 AProjectGroovyBase::AProjectGroovyBase() {
 	gameState = (EAllGameStates::start);
-	health = 0.5f;
+	audienceHealth = 0.5f;
 	audienceBar = NULL;
+
+	dollHealth = 1.0f;
+	dollBar = NULL;
 }
 
 
 
 void AProjectGroovyBase::changeHealth(float healthChange, EAllGameStates state) {
+	float health;
+	UProgressBar* bar;
+
+	if (EAllGameStates::sideAudience == state) {
+		health = audienceHealth;
+		bar = audienceBar;
+	}
+	else if (EAllGameStates::sideDoll == state) {
+		health = dollHealth;
+		bar = dollBar;
+	}
+	else {
+		return;
+	}
+
+
 	health += healthChange;
 
 	// Capped at one
@@ -27,10 +46,18 @@ void AProjectGroovyBase::changeHealth(float healthChange, EAllGameStates state) 
 		handleDeath();
 	}
 
-	if (audienceBar == NULL) RequestEngineExit("Audience Bar reference is still null");
+	if (bar == NULL) RequestEngineExit("Audience Bar reference is still null");
 
-	//// Updates the health in the user widget
-	audienceBar->SetPercent(health);
+	// Updates the health in the user widget
+	bar->SetPercent(health);
+
+
+	if (EAllGameStates::sideAudience == state) {
+		audienceHealth = health;
+	}
+	else {
+		dollHealth = health;
+	}
 
 }
 
