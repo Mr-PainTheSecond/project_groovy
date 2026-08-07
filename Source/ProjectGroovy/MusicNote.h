@@ -35,6 +35,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Scoring")
 		// To be overriden by note blueprint
 		void NoteScore();

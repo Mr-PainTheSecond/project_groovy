@@ -8,6 +8,7 @@ AKeyModeData::AKeyModeData() {
 	PrimaryActorTick.bCanEverTick = false;
 	// Placeholder values
 	song = NULL;
+	BPM = 0;
 	noteList = {};
 	noteObjects = {};
 	beingPlayed = {};
@@ -55,6 +56,7 @@ void AKeyModeData::UnPauseAudio() {
 
 	EAudioComponentPlayState playState = song->GetPlayState();
 
+
 	// If called and song hasn't started, we need to wait until it does start
 	if (!(song->IsPlaying())) {
 		return;
@@ -83,9 +85,11 @@ void AKeyModeData::ScoreNotes(FKey input) {
 	// If it isn't part of the keys, don't bother
 	if (!UGroovyUtilities::IncludesKey(validKeys, input)) return;
 
+	UKismetSystemLibrary::PrintString(GetWorld(), "Is a valid key");
+
 	int theQuarterBeat = -1;
 
-	TArray<AMusicNote*> potentiallyWrong;
+	TArray<AMusicNote*> potentiallyWrong = {};
 	bool validNoteFound = false;
 	for (int a = 0; a < noteObjects.Num(); a++) {
 		AMusicNote* currentNote = noteObjects[a];
@@ -93,6 +97,8 @@ void AKeyModeData::ScoreNotes(FKey input) {
 		if (!(currentNote->active)) {
 			continue;
 		}
+
+		UKismetSystemLibrary::PrintString(GetWorld(), "Found an active key");
 
 		// If true: Officially, the player fucked up
 		if (theQuarterBeat != -1 && currentNote->quarterBeat != theQuarterBeat) {
@@ -105,6 +111,8 @@ void AKeyModeData::ScoreNotes(FKey input) {
 		// We found a valid key, we can score it as so
 		if (UGroovyUtilities::MatchingKey(input, currentNote->noteKey)) {
 			validNoteFound = true;
+
+			UKismetSystemLibrary::PrintString(GetWorld(), "Found a good scoring note");
 
 			currentNote->NoteScore();
 
@@ -127,6 +135,8 @@ void AKeyModeData::ScoreNotes(FKey input) {
 
 	// If no good note, then we will "score" them as wrong, and remove them.
 	if (!validNoteFound) {
+		UKismetSystemLibrary::PrintString(GetWorld(), "No valid note was found");
+
 		for (int a = 0; a < potentiallyWrong.Num(); a++) {
 			potentiallyWrong[a]->NoteScore();
 

@@ -44,6 +44,9 @@ protected:
 		float timeStamp;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Song")
 		int noteIndex;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Song")
+		int BPM;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Health")
 		float health;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Song")
@@ -74,13 +77,15 @@ public:
 	void swapActive();
 
 
+
 	UFUNCTION(BlueprintCallable, Category = "Scoring")
 		void ScoreNotes(FKey input);
 
 	bool getActive();
 
 	void PauseAudio();
-	void UnPauseAudio();
+	UFUNCTION(BlueprintCallable, Category = "Audio Management", DisplayName = "Unpause Audio")
+		void UnPauseAudio();
 
 	UAudioComponent* getSong();
 
