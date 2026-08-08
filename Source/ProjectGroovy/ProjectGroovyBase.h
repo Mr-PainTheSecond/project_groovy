@@ -41,4 +41,6 @@ protected:
 		UProgressBar* dollBar;
 private:
 	void handleDeath();
+
+	virtual void Tick(float DeltaSeconds) override;
 };

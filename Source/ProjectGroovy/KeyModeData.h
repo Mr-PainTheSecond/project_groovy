@@ -32,16 +32,19 @@ UCLASS()
 class PROJECTGROOVY_API AKeyModeData: public AActor {
 	GENERATED_BODY()
 protected:
+	// Game state associated with this mode
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Mode")
 		EAllGameStates gameState;
+	// Length of the song, based on quarter beats
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Progress")
 		int totalQuarterBeats;
+	// Progress on the song, based on Quarter Beats
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Progress")
 		int currentQuarterBeats;
+	// The audio object representing the song
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Song")
 		UAudioComponent* song;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Anchor")
-		float timeStamp;
+	// The song's progress, in terms of index (one quarter beat may be taken by 1-4 entries).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Song")
 		int noteIndex;
 
@@ -49,12 +52,19 @@ protected:
 		int BPM;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Health")
 		float health;
+	// How long health would last, in seconds, if player is at full health.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Timer")
+		float maxTimer;
+	// Full song data.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Song")
 		TArray<FString> noteList;
+	// The note actors, ordered by how close they are to the player
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Notes")
 		TArray<AMusicNote*> noteObjects;
+	// For quarter notes and above, notes being held but haven't been released
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Notes")
 		TArray<AMusicNote*> beingPlayed;
+	// Where the player teleports to upon swapping modes.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Anchor")
 		ATeleporter* anchor;
 public:
@@ -78,8 +88,15 @@ public:
 
 
 
+	/*Using key pressed by player, scores the closest active note.
+	If 2 notes are equally close, and one of them is right, it will
+	score the right one.
+	If the note is right, assess how good the note is.*/
 	UFUNCTION(BlueprintCallable, Category = "Scoring")
 		void ScoreNotes(FKey input);
+
+	UFUNCTION(BlueprintCallable, Category = "Removal")
+		void RemoveNote(AMusicNote* note);
 
 	bool getActive();
 

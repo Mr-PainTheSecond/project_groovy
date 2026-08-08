@@ -12,14 +12,14 @@ AKeyModeData::AKeyModeData() {
 	noteList = {};
 	noteObjects = {};
 	beingPlayed = {};
-	gameState = (EAllGameStates::start);
+	maxTimer = 0.0f;
 	active = true;
 
 	// Actual starting values
 	noteIndex = 0;
 	totalQuarterBeats = 0;
+	gameState = (EAllGameStates::start);
 	health = 0.5f;
-	timeStamp = 0.0f;
 
 	// Our list of what the user can press
 	validKeys.Add(FKey("D"));
@@ -80,6 +80,10 @@ void AKeyModeData::swapLocation() {
 	player->SetActorLocation(anchorLcoation);
 }
 
+void AKeyModeData::RemoveNote(AMusicNote* note) {
+	noteObjects.Remove(note);
+}
+
 
 void AKeyModeData::ScoreNotes(FKey input) {
 	// If it isn't part of the keys, don't bother
@@ -110,15 +114,19 @@ void AKeyModeData::ScoreNotes(FKey input) {
 
 		// We found a valid key, we can score it as so
 		if (UGroovyUtilities::MatchingKey(input, currentNote->noteKey)) {
-			validNoteFound = true;
 
 			UKismetSystemLibrary::PrintString(GetWorld(), "Found a good scoring note");
 
 			currentNote->NoteScore();
 
-			noteObjects.Remove(currentNote);
-			// For notes that need to be held. Blueprint will discard that don't need to be held
-			beingPlayed.Add(currentNote);
+			// If scoring didn't deactive it, then it didn't score, so don't remove it.
+			if (!(currentNote->active)) {
+				validNoteFound = true;
+				noteObjects.Remove(currentNote);
+				// For notes that need to be held. Blueprint will discard that don't need to be held
+				beingPlayed.Add(currentNote);
+			}
+ 
 			break;
 		}
 		//
@@ -140,7 +148,9 @@ void AKeyModeData::ScoreNotes(FKey input) {
 		for (int a = 0; a < potentiallyWrong.Num(); a++) {
 			potentiallyWrong[a]->NoteScore();
 
-			noteObjects.Remove(potentiallyWrong[a]);
+			if (!(potentiallyWrong[a]->active)) {
+				noteObjects.Remove(potentiallyWrong[a]);
+			}
 		}
 	}
 }
@@ -152,6 +162,13 @@ void AKeyModeData::setMajorAtrributes(bool activeness, EAllGameStates state, UAu
 
 	for (int a = 0; a < TNoteList.Num(); a++) {
 		noteList.Add(TNoteList[a]);
+	}
+
+	if (state == EAllGameStates::sideAudience) {
+		maxTimer = 15.0f;
+	}
+	else {
+		maxTimer = 45.0f;
 	}
 
 	// Decides where the player will teleport upon swapping
@@ -180,4 +197,6 @@ void AKeyModeData::BeginPlay() {
 
 void AKeyModeData::Tick(float deltaTime) {
 	Super::Tick(deltaTime);
+
+
 }

@@ -7,6 +7,8 @@
 
 /*Ensures all the properties have some initial value*/
 AProjectGroovyBase::AProjectGroovyBase() {
+	PrimaryActorTick.bCanEverTick = true;
+
 	gameState = (EAllGameStates::start);
 	audienceHealth = 0.5f;
 	audienceBar = NULL;
@@ -70,6 +72,32 @@ void AProjectGroovyBase::handleDeath() {
 	currentSong->Stop();*/
 
 	gameState = (EAllGameStates::gameOver);
+}
+
+void AProjectGroovyBase::Tick(float DeltaSeconds) {
+	Super::Tick(DeltaSeconds);
+	// Doll's health slowly drains while on audience
+	if (gameState == EAllGameStates::sideAudience) {
+		dollHealth -= (1.0f / 40.0f) * DeltaSeconds;
+
+		if (dollHealth < 0.0f) {
+			dollHealth = 0.0f;
+			handleDeath();
+		}
+
+		dollBar->SetPercent(dollHealth);
+	}
+	// Audience health drains quickers while on doll
+	else if (gameState == EAllGameStates::sideDoll) {
+		audienceHealth -= (1.0f / 15.0f) * DeltaSeconds;
+
+		if (audienceHealth < 0.0f) {
+			audienceHealth = 0.0f;
+			handleDeath();
+		}
+
+		audienceBar->SetPercent(audienceHealth);
+	}
 }
 
 void AProjectGroovyBase::setGameState(EAllGameStates state) {
