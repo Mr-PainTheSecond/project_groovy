@@ -40,11 +40,16 @@ public:
 	UAudioComponent* getCurrentSong();
 
 	UFUNCTION(BlueprintCallable, Category = "Mode Select")
-	AKeyModeData* getModeData();
+		AKeyModeData* getModeData();
 	UFUNCTION(BlueprintCallable, Category = "Mode Select")
-	void initializeModeData();
+		void initializeModeData();
 	UFUNCTION(BlueprintCallable, Category = "Audio Management")
-	void createAudioImporter();
+		void createAudioImporter();
+	/*Checks whether player can swap modes/teleport. Can generally
+	happen until the player goes into audience mode after completing the
+	doll track*/
+	UFUNCTION(BlueprintCallable, Category = "Teleporting")
+		bool canTeleport();
 
 	UFUNCTION(BlueprintCallable, Category = "Flag Management")
 		void swapActiveModes();

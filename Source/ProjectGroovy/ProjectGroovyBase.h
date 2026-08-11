@@ -28,6 +28,8 @@ public:
 		void changeHealth(float healthChange, EAllGameStates state);
 
 		void setGameState(EAllGameStates state);
+
+		bool isDollComplete();
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="State")
 		EAllGameStates gameState;
@@ -39,6 +41,10 @@ protected:
 		UProgressBar* audienceBar;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health Bar")
 		UProgressBar* dollBar;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scoring")
+		int scoreByDoll;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Completion")
+		bool dollComplete;
 private:
 	void handleDeath();
 

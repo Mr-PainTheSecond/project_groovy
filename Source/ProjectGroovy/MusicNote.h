@@ -25,6 +25,8 @@ public:
 		int quarterBeat;
 	UPROPERTY(BlueprintReadWrite, Category = "Note Data")
 		int noteIndex;
+	UPROPERTY(BlueprintReadWrite, Category = "Ending")
+		bool lastDoll;
 	UPROPERTY(BlueprintReadWrite, Category = "Note Data")
 		bool active;
 	UPROPERTY(BlueprintReadWrite, Category = "Keyboard")

@@ -62,8 +62,21 @@ void ARhythmGameMode::initializeModeData() {
 	initialized = true;
 }
 
+bool ARhythmGameMode::canTeleport() {
+	if (audienceMode == NULL) return false;
+
+	AProjectGroovyBase* theBase = (AProjectGroovyBase*)UGameplayStatics::GetActorOfClass(GetWorld(), AProjectGroovyBase::StaticClass());
+
+	return !(audienceMode->active && theBase->isDollComplete());
+}
+
 void ARhythmGameMode::swapActiveModes() {
 	if (audienceMode == NULL || dollMode == NULL) RequestEngineExit("One of the modes isn't initialized");
+
+	AProjectGroovyBase* theBase = (AProjectGroovyBase*)UGameplayStatics::GetActorOfClass(GetWorld(), AProjectGroovyBase::StaticClass());
+
+	// Doll is complete, ignore swap.
+	if (!canTeleport()) return;
 
 	audienceMode->swapActive();
 	dollMode->swapActive();
@@ -71,7 +84,6 @@ void ARhythmGameMode::swapActiveModes() {
 	// If modes aren't active, we don't change the game state
 	if (!(audienceMode->initialized) || !(dollMode->initialized)) return;
 
-	AProjectGroovyBase* theBase = (AProjectGroovyBase*)UGameplayStatics::GetActorOfClass(GetWorld(), AProjectGroovyBase::StaticClass());
 
 	if (audienceMode->active) {
 		theBase->setGameState(EAllGameStates::sideAudience);

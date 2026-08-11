@@ -15,6 +15,8 @@ AProjectGroovyBase::AProjectGroovyBase() {
 
 	dollHealth = 1.0f;
 	dollBar = NULL;
+	scoreByDoll = 0;
+	dollComplete = false;
 }
 
 
@@ -77,7 +79,7 @@ void AProjectGroovyBase::handleDeath() {
 void AProjectGroovyBase::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 	// Doll's health slowly drains while on audience
-	if (gameState == EAllGameStates::sideAudience) {
+	if (gameState == EAllGameStates::sideAudience && !dollComplete) {
 		dollHealth -= (1.0f / 40.0f) * DeltaSeconds;
 
 		if (dollHealth < 0.0f) {
@@ -88,7 +90,7 @@ void AProjectGroovyBase::Tick(float DeltaSeconds) {
 		dollBar->SetPercent(dollHealth);
 	}
 	// Audience health drains quickers while on doll
-	else if (gameState == EAllGameStates::sideDoll) {
+	else if (gameState == EAllGameStates::sideDoll && !dollComplete) {
 		audienceHealth -= (1.0f / 15.0f) * DeltaSeconds;
 
 		if (audienceHealth < 0.0f) {
@@ -102,4 +104,8 @@ void AProjectGroovyBase::Tick(float DeltaSeconds) {
 
 void AProjectGroovyBase::setGameState(EAllGameStates state) {
 	gameState = state;
+}
+
+bool AProjectGroovyBase::isDollComplete() {
+	return dollComplete;
 }
