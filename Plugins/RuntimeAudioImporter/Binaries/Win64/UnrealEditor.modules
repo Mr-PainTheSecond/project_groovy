@@ -1,0 +1,8 @@
+{
+	"BuildId": "47537391",
+	"Modules": 
+	{
+		"RuntimeAudioImporter": "UnrealEditor-RuntimeAudioImporter.dll",
+		"RuntimeAudioImporterEditor": "UnrealEditor-RuntimeAudioImporterEditor.dll"
+	}
+}
