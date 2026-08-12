@@ -40,6 +40,16 @@ public:
 	void setActive();
 
 	bool getActive();
+<<<<<<< Updated upstream
+=======
+	UFUNCTION(BlueprintCallable, Category = "Audio Management")
+		void PauseAudio();
+	UFUNCTION(BlueprintCallable, Category = "Audio Management", DisplayName = "Unpause Audio")
+		void UnPauseAudio();
+
+	UAudioComponent* getSong();
+
+>>>>>>> Stashed changes
 
 	UFUNCTION(BlueprintCallable, Category = "Initialization")
 		void setMajorAtrributes(bool activeness, bool BAudience, UAudioComponent* USong, TArray<FString> TNoteList);

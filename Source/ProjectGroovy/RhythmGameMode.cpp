@@ -52,3 +52,15 @@ AKeyModeData* ARhythmGameMode::getModeData() {
 		return NULL;
 	}
 }
+
+void ARhythmGameMode::PauseGameEvent() {
+	AKeyModeData* mode = getModeData();
+	ARhythmPlayer* player = (ARhythmPlayer*)UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+
+	if (player->paused) {
+		mode->PauseAudio();
+	}
+	else {
+		mode->UnPauseAudio();
+	}
+}

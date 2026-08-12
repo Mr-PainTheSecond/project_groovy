@@ -37,4 +37,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Mode Select")
 		void initializeModeData();
 
+<<<<<<< Updated upstream
+=======
+	UFUNCTION(BlueprintCallable, Category = "Flag Management")
+		void swapActiveModes();
+
+		void swapAudioTrack(AKeyModeData* stopping, AKeyModeData* starting);
+
+	UFUNCTION(BlueprintCallable, Category = "Pausing")
+		void PauseGameEvent();
+
+>>>>>>> Stashed changes
 };
