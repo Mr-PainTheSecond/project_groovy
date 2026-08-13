@@ -7,14 +7,37 @@
 
 /*Ensures all the properties have some initial value*/
 AProjectGroovyBase::AProjectGroovyBase() {
-	gameState = (uint8)(EAllGameStates::start);
-	health = 0.5f;
+	PrimaryActorTick.bCanEverTick = true;
+
+	gameState = (EAllGameStates::start);
+	audienceHealth = 0.5f;
 	audienceBar = NULL;
+
+	dollHealth = 1.0f;
+	dollBar = NULL;
+	scoreByDoll = 0;
+	dollComplete = false;
 }
 
 
 
-void AProjectGroovyBase::changeHealth(float healthChange) {
+void AProjectGroovyBase::changeHealth(float healthChange, EAllGameStates state) {
+	float health;
+	UProgressBar* bar;
+
+	if (EAllGameStates::sideAudience == state) {
+		health = audienceHealth;
+		bar = audienceBar;
+	}
+	else if (EAllGameStates::sideDoll == state) {
+		health = dollHealth;
+		bar = dollBar;
+	}
+	else {
+		return;
+	}
+
+
 	health += healthChange;
 
 	// Capped at one
@@ -27,26 +50,62 @@ void AProjectGroovyBase::changeHealth(float healthChange) {
 		handleDeath();
 	}
 
-	if (audienceBar == NULL) RequestEngineExit("Audience Bar reference is still null");
+	if (bar == NULL) RequestEngineExit("Audience Bar reference is still null");
 
-	//// Updates the health in the user widget
-	audienceBar->SetPercent(health);
+	// Updates the health in the user widget
+	bar->SetPercent(health);
+
+
+	if (EAllGameStates::sideAudience == state) {
+		audienceHealth = health;
+	}
+	else {
+		dollHealth = health;
+	}
 
 }
 
 void AProjectGroovyBase::handleDeath() {
 	// Upon Death, stop the song!!!
-	ARhythmGameMode* gameMode = (ARhythmGameMode*)UGameplayStatics::GetGameMode(GetWorld());
+	/*ARhythmGameMode* gameMode = (ARhythmGameMode*)UGameplayStatics::GetGameMode(GetWorld());
 
 	UAudioComponent* currentSong = gameMode->getCurrentSong();
 
-	currentSong->Stop();
+	currentSong->Stop();*/
 
-<<<<<<< Updated upstream
-	gameState = (uint8)(EAllGameStates::gameOver);
-=======
 	gameState = (EAllGameStates::gameOver);
 }
+
+void AProjectGroovyBase::Tick(float DeltaSeconds) {
+	Super::Tick(DeltaSeconds);
+	// Doll's health slowly drains while on audience
+	if (gameState == EAllGameStates::sideAudience && !dollComplete) {
+		dollHealth -= (1.0f / 40.0f) * DeltaSeconds;
+
+		if (dollHealth < 0.0f) {
+			dollHealth = 0.0f;
+			handleDeath();
+		}
+
+		dollBar->SetPercent(dollHealth);
+	}
+	// Audience health drains quickers while on doll
+	else if (gameState == EAllGameStates::sideDoll && !dollComplete) {
+		audienceHealth -= (1.0f / 15.0f) * DeltaSeconds;
+
+		if (audienceHealth < 0.0f) {
+			audienceHealth = 0.0f;
+			handleDeath();
+		}
+
+		audienceBar->SetPercent(audienceHealth);
+	}
+}
+
+void AProjectGroovyBase::setGameState(EAllGameStates state) {
+	gameState = state;
+}
+
 
 void AProjectGroovyBase::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
@@ -86,5 +145,4 @@ void AProjectGroovyBase::setGameState(EAllGameStates state) {
 
 bool AProjectGroovyBase::isDollComplete() {
 	return dollComplete;
->>>>>>> Stashed changes
 }

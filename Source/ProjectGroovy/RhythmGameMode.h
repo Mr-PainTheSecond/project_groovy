@@ -5,13 +5,17 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "Kismet/GameplayStatics.h"
-#include "NotePad.h"
 #include "KeyModeData.h"
+#include "NotePad.h"
+#include "ProjectGroovyBase.h"
+#include "RuntimeAudioImporterLibrary.h"
+#include "RuntimeAudioImporterTypes.h"
 #include "RhythmGameMode.generated.h"
 
 /**
  * 
  */
+
 
 
 UCLASS()
@@ -25,8 +29,11 @@ protected:
 		AKeyModeData* audienceMode;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Modes")
 		AKeyModeData* dollMode;
-
-		bool initialized;
+	bool initialized;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Audio Management")
+		URuntimeAudioImporterLibrary* audioImporter;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Audio Management")
+		UAudioComponent* audioBuffer;
 public:
 	ARhythmGameMode();
 
@@ -36,9 +43,14 @@ public:
 		AKeyModeData* getModeData();
 	UFUNCTION(BlueprintCallable, Category = "Mode Select")
 		void initializeModeData();
+	UFUNCTION(BlueprintCallable, Category = "Audio Management")
+		void createAudioImporter();
+	/*Checks whether player can swap modes/teleport. Can generally
+	happen until the player goes into audience mode after completing the
+	doll track*/
+	UFUNCTION(BlueprintCallable, Category = "Teleporting")
+		bool canTeleport();
 
-<<<<<<< Updated upstream
-=======
 	UFUNCTION(BlueprintCallable, Category = "Flag Management")
 		void swapActiveModes();
 
@@ -47,5 +59,4 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Pausing")
 		void PauseGameEvent();
 
->>>>>>> Stashed changes
 };

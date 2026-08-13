@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameStateBase.h"
-#include "RhythmGameMode.h"
+#include "KeyModeData.h"
 #include "Components/AudioComponent.h"
 #include "GameFramework/CheatManager.h"
 #include "Components/ProgressBar.h"
@@ -19,16 +19,6 @@
 
 
 
-UENUM(BlueprintType)
-enum class EAllGameStates: uint8 {
-	start,
-	sideAudience,
-	sideGremlin,
-	gameWon,
-	gameOver
-};
-
-
 UCLASS()
 class PROJECTGROOVY_API AProjectGroovyBase : public AGameStateBase
 {
@@ -36,23 +26,31 @@ public:
 	GENERATED_BODY()
 		AProjectGroovyBase();
 	UFUNCTION(BlueprintCallable, Category="Health")
-		void changeHealth(float healthChange);
+		void changeHealth(float healthChange, EAllGameStates state);
 
-<<<<<<< Updated upstream
-=======
+		void setGameState(EAllGameStates state);
+
 		void setGameState(EAllGameStates state);
 
 		bool isDollComplete();
-
-
->>>>>>> Stashed changes
+    
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="State")
-		uint8 gameState;
+		EAllGameStates gameState;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
-		float health;
+		float audienceHealth;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
+		float dollHealth;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health Bar")
 		UProgressBar* audienceBar;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health Bar")
+		UProgressBar* dollBar;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scoring")
+		int scoreByDoll;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Completion")
+		bool dollComplete;
 private:
 	void handleDeath();
+
+	virtual void Tick(float DeltaSeconds) override;
 };
