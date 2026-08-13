@@ -8,6 +8,7 @@
 #include "Components/AudioComponent.h"
 #include "GameFramework/CheatManager.h"
 #include "Components/ProgressBar.h"
+#include "RhythmPlayer.h"
 #include "ProjectGroovyBase.generated.h"
 
 #define WIDGET_AMOUNT 3
@@ -29,7 +30,10 @@ public:
 
 		void setGameState(EAllGameStates state);
 
+		void setGameState(EAllGameStates state);
+
 		bool isDollComplete();
+    
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="State")
 		EAllGameStates gameState;

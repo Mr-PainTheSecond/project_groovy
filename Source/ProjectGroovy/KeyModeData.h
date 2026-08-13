@@ -99,6 +99,16 @@ public:
 		void RemoveNote(AMusicNote* note);
 
 	bool getActive();
+<<<<<<< Updated upstream
+=======
+	UFUNCTION(BlueprintCallable, Category = "Audio Management")
+		void PauseAudio();
+	UFUNCTION(BlueprintCallable, Category = "Audio Management", DisplayName = "Unpause Audio")
+		void UnPauseAudio();
+
+	UAudioComponent* getSong();
+
+>>>>>>> Stashed changes
 
 	void PauseAudio();
 	UFUNCTION(BlueprintCallable, Category = "Audio Management", DisplayName = "Unpause Audio")

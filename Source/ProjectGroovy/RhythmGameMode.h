@@ -55,4 +55,8 @@ public:
 		void swapActiveModes();
 
 		void swapAudioTrack(AKeyModeData* stopping, AKeyModeData* starting);
+
+	UFUNCTION(BlueprintCallable, Category = "Pausing")
+		void PauseGameEvent();
+
 };
