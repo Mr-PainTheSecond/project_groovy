@@ -197,6 +197,4 @@ void AKeyModeData::BeginPlay() {
 
 void AKeyModeData::Tick(float deltaTime) {
 	Super::Tick(deltaTime);
-
-
 }

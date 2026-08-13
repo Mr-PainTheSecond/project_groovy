@@ -30,7 +30,6 @@ public:
 
 		void setGameState(EAllGameStates state);
 
-		void setGameState(EAllGameStates state);
 
 		bool isDollComplete();
     
