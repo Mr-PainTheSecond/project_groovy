@@ -44,8 +44,22 @@ protected:
 		UProgressBar* audienceBar;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health Bar")
 		UProgressBar* dollBar;
+
+	// All Data below will be saved upon song completion
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Performance")
+		FString rank;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scoring")
+		int scoreByAudience;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scoring")
 		int scoreByDoll;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scoring")
+		int score;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Performance")
+		int highestAudienceStreak;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Performance")
+		int highestDollStreak;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Performance")
+		int highestStreak;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Completion")
 		bool dollComplete;
 private:
