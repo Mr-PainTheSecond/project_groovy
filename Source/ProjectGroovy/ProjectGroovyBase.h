@@ -33,7 +33,6 @@ public:
 
 		bool isDollComplete();
     
-protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="State")
 		EAllGameStates gameState;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")

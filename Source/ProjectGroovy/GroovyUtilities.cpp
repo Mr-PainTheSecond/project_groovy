@@ -33,3 +33,13 @@ bool UGroovyUtilities::MatchingKey(FKey keyA, FKey keyB) {
 
 	return textA.EqualTo(textB);
 }
+
+void UGroovyUtilities::free2DTArray(TArray<FString>** array, int size) {
+	if (array == NULL) return;
+
+	for (int a = 0; a < size; a++) {
+		array[a]->Empty();
+	}
+
+	free(array);
+}

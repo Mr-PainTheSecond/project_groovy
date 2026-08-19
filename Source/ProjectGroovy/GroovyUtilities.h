@@ -22,4 +22,7 @@ public:
 		static bool IncludesKey(TArray<FKey> keys, FKey key);
 	UFUNCTION(BlueprintCallable, Category = "Keyboard")
 		static bool MatchingKey(FKey keyA, FKey keyB);
+public:
+	static void free2DTArray(TArray<FString>** array, int size);
+
 };

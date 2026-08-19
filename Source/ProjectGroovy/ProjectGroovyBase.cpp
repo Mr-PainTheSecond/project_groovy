@@ -16,6 +16,7 @@ AProjectGroovyBase::AProjectGroovyBase() {
 	dollHealth = 1.0f;
 	dollBar = NULL;
 	scoreByDoll = 0;
+	scoreByAudience = 0;
 	score = 0;
 	rank = TEXT("E");
 	dollComplete = false;

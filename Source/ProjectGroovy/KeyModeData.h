@@ -68,6 +68,11 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Anchor")
 		ATeleporter* anchor;
 public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Ranking");
+		int highestPossibleScore;
+
+	
+public:
 	AKeyModeData();
 
 	bool active;
@@ -110,6 +115,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Initialization")
 		void setMajorAtrributes(bool activeness, EAllGameStates state, UAudioComponent* USong, TArray<FString> TNoteList, TArray<ATeleporter*> TTele);
+
+	UFUNCTION(BlueprintCallable, Category = "Ranking")
+		void CalculateHighestScore();
 private:
 	TArray<FKey> validKeys;
 };

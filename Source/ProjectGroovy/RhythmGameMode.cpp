@@ -139,3 +139,11 @@ void ARhythmGameMode::PauseGameEvent() {
 		mode->UnPauseAudio();
 	}
 }
+
+int ARhythmGameMode::getMaxAudienceScore() {
+	return audienceMode->highestPossibleScore;
+}
+
+int ARhythmGameMode::getMaxDollScore() {
+	return dollMode->highestPossibleScore;
+}

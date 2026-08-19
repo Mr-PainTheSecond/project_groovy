@@ -35,6 +35,13 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Audio Management")
 		UAudioComponent* audioBuffer;
 public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Song");
+		FString audienceSongTitle;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Song");
+		FString dollSongTitle;
+
+public:
 	ARhythmGameMode();
 
 	UAudioComponent* getCurrentSong();
@@ -58,5 +65,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Pausing")
 		void PauseGameEvent();
+		
+		int getMaxAudienceScore();
 
+		int getMaxDollScore();
 };

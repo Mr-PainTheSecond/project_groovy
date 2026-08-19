@@ -191,6 +191,35 @@ void AKeyModeData::setMajorAtrributes(bool activeness, EAllGameStates state, UAu
 
 }
 
+/*Given the string representation of a note, returns whether the notes can be held
+while played or not*/
+bool IsHoldable(FString note) {
+	return note.Contains(TEXT("/")) || note.Contains(TEXT("?")) || note.Contains(TEXT("L"));
+}
+
+void AKeyModeData::CalculateHighestScore() {
+	highestPossibleScore = 0;
+
+	int multiplier = 1;
+
+	if (gameState == EAllGameStates::sideDoll) {
+		multiplier = 8;
+	}
+
+	for (int a = 0; a < noteList.Num(); a++) {
+		// Rests don't count
+		if (noteList[a].IsEmpty()) continue;
+
+		// Notes that are held score up to 2500, non-hold score 1000
+		if (IsHoldable(noteList[a])) {
+			highestPossibleScore += (2500 * multiplier);
+		}
+		else {
+			highestPossibleScore += (1000 * multiplier);
+		}
+	}
+}
+
 void AKeyModeData::BeginPlay() {
 	Super::BeginPlay();
 }

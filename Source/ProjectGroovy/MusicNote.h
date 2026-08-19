@@ -29,6 +29,8 @@ public:
 		bool lastDoll;
 	UPROPERTY(BlueprintReadWrite, Category = "Note Data")
 		bool active;
+	UPROPERTY(BlueprintReadWrite, Category = "Type")
+		bool isHoldable;
 	UPROPERTY(BlueprintReadWrite, Category = "Keyboard")
 		FKey noteKey;
 		

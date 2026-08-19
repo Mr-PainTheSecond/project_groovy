@@ -4,7 +4,7 @@
 #include "Teleporter.h"
 
 ATeleporter::ATeleporter() {
-	
+
 }
 
 // Called when the game starts or when spawned
