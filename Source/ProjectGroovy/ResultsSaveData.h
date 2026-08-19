@@ -8,11 +8,33 @@
 #include "ProjectGroovyBase.h"
 #include "RhythmGameMode.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetStringLibrary.h"
 #include "ResultsSaveData.generated.h"
 
 /**
  * 
  */
+
+UENUM(BlueprintType)
+enum class EBodyText: uint8 {
+	audiencePerformance,
+	resultsTransition,
+	dollPerformance
+};
+
+UENUM(BlueprintType)
+enum class ERanks : uint8 {
+	E,
+	D,
+	C,
+	B,
+	A,
+	S,
+	SP UMETA(DisplayName = "S+"),
+	SPP UMETA(DisplayName = "S++"),
+	NA UMETA(DisplayName = "N/A")
+};
+
 UCLASS()
 class PROJECTGROOVY_API UResultsSaveData : public USaveGame
 {
@@ -37,9 +59,11 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Streaks")
 		int highestOverallStreak;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Rank")
-		FString audienceRank;
+		ERanks audienceRank;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Rank")
-		FString dollRank;
+		ERanks dollRank;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Rank")
+		ERanks overallRank;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Doll")
 		bool dollComplete;
 
@@ -48,6 +72,9 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Song");
 		FString dollSongTitle;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Song");
+		FString crossoverTitle;
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Scoring")
