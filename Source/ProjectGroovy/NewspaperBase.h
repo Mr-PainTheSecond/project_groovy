@@ -6,7 +6,9 @@
 #include "WidgetBlueprint.h"
 #include "Components/MultiLineEditableTextBox.h"
 #include "GroovyUtilities.h"
+
 #include "NewspaperBase.generated.h"
+
 
 /**
  * 
@@ -21,6 +23,7 @@ class PROJECTGROOVY_API UNewspaperBase : public UWidgetBlueprint
 public:
 	virtual void BeginDestroy() override;
 
+
 	UFUNCTION(BlueprintCallable, Category = "Initialization")
 		void initializeEntries(int bodyCount, TArray<int> possibleText);
 protected:
@@ -28,5 +31,5 @@ protected:
 		TArray<UMultiLineEditableTextBox*> newsBody;
 
 		TArray<FString>* allText;
-
+	
 };

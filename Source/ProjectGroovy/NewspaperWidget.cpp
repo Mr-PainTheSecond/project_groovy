@@ -32,3 +32,14 @@ void UNewspaperWidget::FreeMemory() {
 
 	UGroovyUtilities::free2DTArray(allText, newsBody.Num());
 }
+
+FString UNewspaperWidget::getVictoryMessage(EBodyText bodyAsset, ERanks earnedRank) {
+	int bodyIndex = (int)bodyAsset;
+	int rankIndex = (int)earnedRank;
+
+	if (bodyIndex >= BODY_COUNT || rankIndex >= RANK_COUNT) {
+		return TEXT("INDEX IS WACK BRO!!!");
+	}
+
+	return victoryMessages[bodyIndex][rankIndex];
+}

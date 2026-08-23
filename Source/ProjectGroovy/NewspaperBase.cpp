@@ -6,11 +6,7 @@
 UNewspaperBase::UNewspaperBase() {
 	allText = NULL;
 
-	TArray<FString>* test = (TArray<FString>*)malloc(sizeof(TArray<FString>) * 20);
 
-	if (test == NULL) {
-		RequestEngineExit("Test failed due to malloc");
-	}
 
 	/*UGroovyUtilities::free2DTArray(allText, 20);*/
 }

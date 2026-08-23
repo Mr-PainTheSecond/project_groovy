@@ -8,6 +8,7 @@
 #include "Components/AudioComponent.h"
 #include "GameFramework/CheatManager.h"
 #include "Components/ProgressBar.h"
+#include "GroovyUtilities.h"
 #include "RhythmPlayer.h"
 #include "ProjectGroovyBase.generated.h"
 
@@ -17,6 +18,12 @@
  * 
  */
 
+UENUM(BlueprintType)
+enum class EDangerLevels : uint8 {
+	noDanger,
+	singleDanger,
+	doubleDanger
+};
 
 
 UCLASS()
@@ -39,11 +46,21 @@ public:
 		float audienceHealth;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
 		float dollHealth;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Danger")
+		EDangerLevels dangerLevel;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Danger")
+		USoundBase* wrongAudienceDanger;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Danger")
+		USoundBase* drainAudienceDanger;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Danger")
+		USoundBase* wrongDollDanger;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Danger")
+		USoundBase* drainDollDanger;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health Bar")
 		UProgressBar* audienceBar;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health Bar")
 		UProgressBar* dollBar;
-
+	
 	// All Data below will be saved upon song completion
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Performance")
 		FString rank;
@@ -61,8 +78,14 @@ public:
 		int highestStreak;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Completion")
 		bool dollComplete;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SFX")
+		UAudioComponent* playingSFX;
 private:
 	void handleDeath();
+
+	void updateDangerLevel();
+
+	void handleDangerSFX();
 
 	virtual void Tick(float DeltaSeconds) override;
 };

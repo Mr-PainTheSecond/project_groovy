@@ -10,6 +10,10 @@ AProjectGroovyBase::AProjectGroovyBase() {
 	PrimaryActorTick.bCanEverTick = true;
 
 	gameState = (EAllGameStates::start);
+	score = 0;
+	rank = TEXT("E");
+	dangerLevel = EDangerLevels::noDanger;
+
 	audienceHealth = 0.5f;
 	audienceBar = NULL;
 
@@ -17,12 +21,73 @@ AProjectGroovyBase::AProjectGroovyBase() {
 	dollBar = NULL;
 	scoreByDoll = 0;
 	scoreByAudience = 0;
-	score = 0;
-	rank = TEXT("E");
 	dollComplete = false;
+
+	wrongAudienceDanger = NULL;
+	drainAudienceDanger = NULL;
+	wrongDollDanger = NULL;
+	drainDollDanger = NULL;
+
+	playingSFX = NULL;
 }
 
+void AProjectGroovyBase::handleDangerSFX() {
+	static bool audienceDanger = false;
+	static bool dollDanger = false;
 
+
+	if (audienceDanger && audienceHealth >= 0.25f) audienceDanger = false;
+	if (dollDanger && dollHealth >= 0.25f) dollDanger = false;
+
+	// SFX have already been handled
+	if (audienceDanger && dollDanger) return;
+
+	// Player's danger has recently increased
+	if (!audienceDanger && audienceHealth < 0.25f) {
+		audienceDanger = true;
+
+		// If SFX already playing, don't play at all
+		if (playingSFX != NULL) return;
+
+		// It was due to making a mistake in audience
+		if (gameState == EAllGameStates::sideAudience && wrongAudienceDanger != NULL) {
+			playingSFX = UGroovyUtilities::loadAndPlay(GetWorld(), wrongAudienceDanger);
+		}
+		else if (drainAudienceDanger != NULL) {
+			playingSFX = UGroovyUtilities::loadAndPlay(GetWorld(), drainAudienceDanger);
+		}
+	}
+	else if (!dollDanger && dollHealth < 0.25f) {
+		dollDanger = true;
+
+		if (playingSFX != NULL) return;
+
+		if (gameState == EAllGameStates::sideDoll && wrongDollDanger != NULL) {
+			playingSFX = UGroovyUtilities::loadAndPlay(GetWorld(), wrongDollDanger, 3.0f);
+		}
+		else if (drainDollDanger != NULL) {
+			playingSFX = UGroovyUtilities::loadAndPlay(GetWorld(), drainDollDanger);
+		}
+	}
+
+
+}
+
+void AProjectGroovyBase::updateDangerLevel() {
+	// If doll is already finished, never counts towards danger level
+	if (audienceHealth < 0.25f && (dollHealth < 0.25f && !dollComplete)) {
+		dangerLevel = EDangerLevels::doubleDanger;
+	}
+	// One of them are below 1/4, one danger
+	else if (audienceHealth < 0.25f || (dollHealth < 0.25f && !dollComplete)) {
+		dangerLevel = EDangerLevels::singleDanger;
+	}
+	else {
+		dangerLevel = EDangerLevels::noDanger;
+	}
+
+	handleDangerSFX();
+}
 
 void AProjectGroovyBase::changeHealth(float healthChange, EAllGameStates state) {
 	float health;
@@ -66,6 +131,8 @@ void AProjectGroovyBase::changeHealth(float healthChange, EAllGameStates state) 
 		dollHealth = health;
 	}
 
+
+	updateDangerLevel();
 }
 
 void AProjectGroovyBase::handleDeath() {
@@ -84,6 +151,12 @@ void AProjectGroovyBase::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 
 	ARhythmPlayer* player = (ARhythmPlayer*)UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+
+	// The SFX finished plaing, destroy it.
+	if (playingSFX != NULL && !(playingSFX->IsPlaying())) {
+		playingSFX->DestroyComponent();
+		playingSFX = NULL;
+	}
 
 	// Don't drain health if paused
 	if (player->paused) return;
@@ -110,6 +183,8 @@ void AProjectGroovyBase::Tick(float DeltaSeconds) {
 
 		audienceBar->SetPercent(audienceHealth);
 	}
+
+	updateDangerLevel();
 }
 
 void AProjectGroovyBase::setGameState(EAllGameStates state) {

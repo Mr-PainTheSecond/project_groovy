@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
+#include "Kismet/GameplayStatics.h"
+#include "Components/AudioComponent.h"
 #include "Kismet/KismetInputLibrary.h"
 #include "GroovyUtilities.generated.h"
 
@@ -25,4 +27,5 @@ public:
 public:
 	static void free2DTArray(TArray<FString>** array, int size);
 
+	static UAudioComponent* loadAndPlay(UWorld* world, USoundBase* sound, float noiseMult = 1.0f);
 };

@@ -17,7 +17,6 @@
  */
 
 
-
 UCLASS()
 class PROJECTGROOVY_API ARhythmGameMode : public AGameModeBase
 {

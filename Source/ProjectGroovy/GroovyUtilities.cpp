@@ -25,6 +25,14 @@ bool UGroovyUtilities::IncludesKey(TArray<FKey> keys, FKey key) {
 	return false;
 }
 
+UAudioComponent* UGroovyUtilities::loadAndPlay(UWorld* world, USoundBase* sound, float noiseMult) {
+	UAudioComponent* newAudio = UGameplayStatics::CreateSound2D(world, sound, noiseMult);
+	
+	newAudio->Play();
+
+	return newAudio;
+}
+
 /*Determines whether two keys are the same by comparing
 their display names*/
 bool UGroovyUtilities::MatchingKey(FKey keyA, FKey keyB) {
