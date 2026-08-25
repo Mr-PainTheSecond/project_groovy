@@ -119,6 +119,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Ranking")
 		void CalculateHighestScore();
+
+		void DeActiveNotes();
+
+		void ActivateNotes();
 private:
 	TArray<FKey> validKeys;
 };

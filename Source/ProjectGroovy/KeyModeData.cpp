@@ -40,8 +40,13 @@ bool AKeyModeData::getActive() {
 void AKeyModeData::swapActive() {
 	active = !active;
 
+	// If this mode isn't active, don't do tick events for music notes
 	if (active) {
 		swapLocation();
+		ActivateNotes();
+	}
+	else {
+		DeActiveNotes();
 	}
 }
 
@@ -84,6 +89,17 @@ void AKeyModeData::RemoveNote(AMusicNote* note) {
 	noteObjects.Remove(note);
 }
 
+void AKeyModeData::DeActiveNotes() {
+	for (int a = 0; a < noteObjects.Num(); a++) {
+		noteObjects[a]->PrimaryActorTick.bCanEverTick = false;
+	}
+}
+
+void AKeyModeData::ActivateNotes() {
+	for (int a = 0; a < noteObjects.Num(); a++) {
+		noteObjects[a]->PrimaryActorTick.bCanEverTick = true;
+	}
+}
 
 void AKeyModeData::ScoreNotes(FKey input) {
 	// If it isn't part of the keys, don't bother
