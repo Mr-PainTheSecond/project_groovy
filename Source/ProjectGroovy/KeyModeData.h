@@ -20,7 +20,8 @@ enum class EAllGameStates : uint8 {
 	sideAudience,
 	sideDoll,
 	gameWon,
-	gameOver
+	gameOver,
+	countdown
 };
 
 

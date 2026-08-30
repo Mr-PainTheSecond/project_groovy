@@ -58,7 +58,7 @@ public:
 		bool canTeleport();
 
 	UFUNCTION(BlueprintCallable, Category = "Flag Management")
-		void swapActiveModes();
+		void swapActiveModes(bool manualSwap);
 
 		void swapAudioTrack(AKeyModeData* stopping, AKeyModeData* starting);
 
@@ -68,4 +68,6 @@ public:
 		int getMaxAudienceScore();
 
 		int getMaxDollScore();
+
+		void countdownEnd();
 };
