@@ -29,6 +29,7 @@ AProjectGroovyBase::AProjectGroovyBase() {
 	drainDollDanger = NULL;
 
 	playingSFX = NULL;
+	canDrain = false;
 }
 
 void AProjectGroovyBase::handleDangerSFX() {
@@ -162,7 +163,7 @@ void AProjectGroovyBase::Tick(float DeltaSeconds) {
 	if (player->paused) return;
 
 	// Doll's health slowly drains while on audience
-	if (gameState == EAllGameStates::sideAudience && !dollComplete) {
+	if (gameState == EAllGameStates::sideAudience && !dollComplete && canDrain) {
 		dollHealth -= (1.0f / 40.0f) * DeltaSeconds;
 
 		if (dollHealth < 0.0f) {
@@ -173,7 +174,7 @@ void AProjectGroovyBase::Tick(float DeltaSeconds) {
 		dollBar->SetPercent(dollHealth);
 	}
 	// Audience health drains quickers while on doll
-	else if (gameState == EAllGameStates::sideDoll && !dollComplete) {
+	else if (gameState == EAllGameStates::sideDoll && !dollComplete && canDrain) {
 		audienceHealth -= (1.0f / 15.0f) * DeltaSeconds;
 
 		if (audienceHealth < 0.0f) {

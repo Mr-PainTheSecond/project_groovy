@@ -37,6 +37,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Song");
 		FString audienceSongTitle;
 
+		float targetTime;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Song");
 		FString dollSongTitle;
 

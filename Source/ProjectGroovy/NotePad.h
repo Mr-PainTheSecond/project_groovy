@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Kismet/GameplayStatics.h"
 #include "NotePad.generated.h"
 
 UCLASS()
@@ -20,8 +21,16 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	float targetTime;
+
+	float currentTime;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintCallable, Category = "BPM Testing")
+		void setTargetTime(int BPM);
+	UFUNCTION(BlueprintCallable, Category = "BPM Testing")
+		void testTime();
 };

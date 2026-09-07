@@ -80,6 +80,8 @@ public:
 		bool dollComplete;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SFX")
 		UAudioComponent* playingSFX;
+		// Whether other mode's health drains. Should be true for production
+		bool canDrain;
 private:
 	void handleDeath();
 
