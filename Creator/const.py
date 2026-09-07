@@ -1,2 +1,5 @@
 WIDTH = 1080
 HEIGHT = 720
+FRAME_RATE = 240
+
+paused = False

@@ -1,5 +1,5 @@
 from enum import Enum
-from const import *
+import const
 import pygame
 
 class NotesTypes(Enum):
@@ -11,7 +11,7 @@ class NotesTypes(Enum):
 
 
 class Page:
-    def __init__(self, beat):
+    def __init__(self, beat, BPM):
         self.notes = {
             "yellow": NotesTypes.NONE,
             "blue": NotesTypes.NONE,
@@ -22,6 +22,10 @@ class Page:
         self.counter = 0
         
         self.beat = beat
+        
+        # If notes move at one BPM, it would take 15 seconds to go from note A to note B
+        # Since first 16 notes are filler, we subtract 16 from beat
+        self.timeStamp = (15 / BPM) * (beat - 16)
         
     def interpretNote(self, note):
         if len(note) == 0: return True
@@ -63,23 +67,30 @@ class Page:
             return False
 
 class Note(pygame.sprite.Sprite):
-    def __init__(self, x, y, color):
+    def __init__(self, x, y, color, BPM, w, h):
         super().__init__()
+        
+        baseMovement = float(const.HEIGHT * 0.545) / 60.0 / float(const.FRAME_RATE)
+        self.speed = baseMovement * BPM
         
         self.baseX = x
         self.baseY = y
+        
+        self.currentX = x
+        self.currentY = y
         self.color = color
         
-        self.rect = pygame.Rect(x, y, 100, 100)
+        self.rect = pygame.Rect(x, float(y), w, h)
         
     
     def onScreen(self):
-        return self.rect.x > 0 and (self.rect.y + self.rect.h) > 0 and self.rect.x < WIDTH and (self.rect.y) < HEIGHT
+        return (self.currentX + self.rect.w) > 0 and (self.currentY + self.rect.h) > 0 and self.currentX < const.WIDTH and (self.currentY) < const.HEIGHT
     
     def update(self):
-        self.rect.y += 1
+        if not const.paused:
+            self.currentY += self.speed
         
         if (self.onScreen()):
+            self.rect = pygame.Rect(self.currentX, self.currentY, self.rect.w, self.rect.h)
             pygame.draw.rect(pygame.display.get_surface(), self.color, self.rect)
-        
         
