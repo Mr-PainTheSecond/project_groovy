@@ -65,7 +65,7 @@ void ARhythmGameMode::initializeModeData() {
 
 
 bool ARhythmGameMode::canTeleport() {
-	if (audienceMode == NULL) return false;
+	if (audienceMode == NULL || dollMode == NULL) return false;
 
 	AProjectGroovyBase* theBase = (AProjectGroovyBase*)UGameplayStatics::GetActorOfClass(GetWorld(), AProjectGroovyBase::StaticClass());
 
@@ -146,12 +146,15 @@ the Blueprint Mode. Called for whenver a new
 Notepad is made.*/
 AKeyModeData* ARhythmGameMode::getModeData() {
 	if (audienceMode->getActive()) {
+		/*UKismetSystemLibrary::PrintString(GetWorld(), "Swapped to Audience!");*/
 		return audienceMode;
 	}
 	else if (dollMode->getActive()) {
+		UKismetSystemLibrary::PrintString(GetWorld(), "Swapped to Doll!");
 		return dollMode;
 	}
 	else {
+		UKismetSystemLibrary::PrintString(GetWorld(), "Swapped to Nothing!");
 		return NULL;
 	}
 }

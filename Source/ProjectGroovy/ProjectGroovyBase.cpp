@@ -29,7 +29,7 @@ AProjectGroovyBase::AProjectGroovyBase() {
 	drainDollDanger = NULL;
 
 	playingSFX = NULL;
-	canDrain = false;
+	canDrain = true;
 }
 
 void AProjectGroovyBase::handleDangerSFX() {
@@ -153,14 +153,16 @@ void AProjectGroovyBase::Tick(float DeltaSeconds) {
 
 	ARhythmPlayer* player = (ARhythmPlayer*)UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 
+
+
 	// The SFX finished plaing, destroy it.
 	if (playingSFX != NULL && !(playingSFX->IsPlaying())) {
 		playingSFX->DestroyComponent();
 		playingSFX = NULL;
 	}
 
-	// Don't drain health if paused
-	if (player->paused) return;
+	// Don't drain health if paused (or if in debug camera)
+	if (player == NULL || player->paused) return;
 
 	// Doll's health slowly drains while on audience
 	if (gameState == EAllGameStates::sideAudience && !dollComplete && canDrain) {

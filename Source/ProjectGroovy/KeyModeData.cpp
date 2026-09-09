@@ -13,7 +13,7 @@ AKeyModeData::AKeyModeData() {
 	noteObjects = {};
 	beingPlayed = {};
 	maxTimer = 0.0f;
-	active = true;
+	active = false;
 
 	// Actual starting values
 	noteIndex = 0;
